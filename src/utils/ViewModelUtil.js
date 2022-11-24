@@ -1,67 +1,88 @@
-// interface confObj {
-//   data: any{}
-//   methods: any{}
-// }
-
+/**
+ * 数据绑定模块
+ * @param {HTMLElement} rootElement
+ * @param {Object} options
+ */
 class ViewModel {
-  #rootDOM
   /**
-   * ViewModel
+   * 挂载根节点
+   */
+  #rootDOM
+
+  /**
+   * 放置副作用函数的临时变量
+   */
+  #registeringEffect
+
+  /**
+   * ViewModel构造函数
    * @param {HTMLElement} rootDOM
-   * @param {any} confObj
+   * @param {{}} confObj
    *
    * @constructor
    */
   constructor (rootDOM, confObj) {
     this.#rootDOM = rootDOM
 
-    this.$effectMap = {}
+    /**
+     * @type {Map<Proxy, Map<string, Set<Function>>>}
+     */
+    this.$effectMap = new Map()
     this.$attrBindedElements = this.#rootDOM.querySelectorAll('[bind-attr]')
+    this.$propBindedElements = this.#rootDOM.querySelectorAll('[bind-prop]')
     this.$eventBindedElements = this.#rootDOM.querySelectorAll('[bind-event]')
+    this.$twoWayBindedElements = this.#rootDOM.querySelectorAll('[bind-two-way]')
 
     // 代理数据
-    this.data = new Proxy(confObj.data, {
+    const handlers = {
       get: (target, prop) => {
+        if (this.#registeringEffect && !(target[prop] instanceof Object)) {
+          this.#registerEffect(target, prop, this.#registeringEffect)
+          this.#registeringEffect = null
+        }
         return target[prop]
       },
 
       set: (target, prop, value) => {
-        target[prop] = value
-        this.$effectMap[prop]?.forEach(effect => effect())
+        if (!(target[prop] instanceof Object)) {
+          target[prop] = value
+        } else {
+          target[prop] = this.#createNestedProxy(value, handlers)
+        }
+        // HACK: 监听类似input这样的事件会造成无限循环，但不知道为什么循环到第二次的时候副作用桶会变成空值造成异常然后跳出，这里判断一下effect是否为空让它不至于报错
+        this.$effectMap.get(target)?.get(prop)?.forEach(effect => effect && effect())
         return true
       }
-    })
+    }
+    this.data = this.#createNestedProxy(confObj.data, handlers)
 
     // 挂载方法
-    this.methods = confObj.methods
+    this.methods = {}
+    for (const key in confObj.methods) {
+      this.methods[key] = confObj.methods[key].bind(this)
+    }
 
     // 处理Attributes单向绑定
     this.$attrBindedElements.forEach(el => {
-      // bind-attr="attr1@{expression1} attr2@{expression2}..."
       // 分割绑定属性的字符串
-      const elementBindList = el.getAttribute('bind-attr').match(/[a-zA-Z0-9-]+@\{.+\}/g)
-      elementBindList.forEach(bind => {
-        // 分割属性和表达式
-        const pair = bind.split('@')
-        const attr = pair[0]
-        const expression = pair[1].slice(1, -1)
-        // 在表达式中查找this.data的属性
-        const match = expression.match(/(?<=this\.data\.)[a-zA-Z0-9]+/g)
-        // 将表达式存入属性对应的副作用桶内
-        if (match) {
-          // key: this的属性名
-          match.forEach(key => {
-            if (!this.$effectMap[key]) {
-              this.$effectMap[key] = new Set()
-            }
-            this.$effectMap[key].add(() => {
-              el.setAttribute(attr, (new Function(`
-                'use strict'
-                return ${expression}
-              `)).bind(this)())
-            })
-          })
-        }
+      const bindStr = el.getAttribute('bind-attr')
+      const bindList = this.#resolveBindStr(bindStr)
+      bindList.forEach(({ target, expression }) => {
+        // 根据表达式创建副作用函数
+        this.#registeringEffect = () => { el.setAttribute(target, expression()) }
+        this.#registeringEffect()
+      })
+    })
+
+    // 处理Properties单向绑定
+    this.$propBindedElements.forEach(el => {
+      // 分割绑定属性的字符串
+      const bindStr = el.getAttribute('bind-prop')
+      const bindList = this.#resolveBindStr(bindStr)
+      bindList.forEach(({ target, expression }) => {
+        // 根据表达式创建副作用函数
+        this.#registeringEffect = () => { el[target] = expression() }
+        this.#registeringEffect()
       })
     })
 
@@ -70,25 +91,96 @@ class ViewModel {
       // bind-event="event1@{expression1} event2@{expression2}..."
       // expression => Function
       // 分割绑定事件的字符串
-      const elementBindList = el.getAttribute('bind-event').match(/[a-zA-Z0-9-]+@\{.+\}/g)
-      elementBindList.forEach(bind => {
-        // 分割事件和表达式
-        const pair = bind.split('@')
-        const event = pair[0]
-        const expression = pair[1].slice(1, -1)
-        // 绑定事件
-        console.log(this.methods)
-        el.addEventListener(event, (new Function(`
-          'use strict'
-          return ${expression}
-        `)).bind(this)().bind(this))
+      const bindList = this.#resolveBindStr(el.getAttribute('bind-event'))
+      bindList.forEach(({ target, expression }) => {
+        el.addEventListener(target, expression().bind(this))
       })
     })
 
+    // 处理双向绑定
+    // this.$twoWayBindedElements.forEach(el => {
+    //   // 分割绑定属性的字符串
+    //   const bindStr = el.getAttribute('bind-two-way')
+    //   const bindList = this.#resolveBindStr(bindStr)
+    //   bindList.forEach(({ target, expression }) => {
+    //     // 根据表达式创建副作用函数
+    //     this.#registeringEffect = () => { el[target] = expression() }
+    //     this.#registeringEffect()
+    //     // 对某些表单元素的特别处理
+    //     const isFormElement = ['input', 'textarea', 'select'].includes(el.tagName.toLowerCase())
+    //     const eventName = isFormElement ? 'input' : `${target}-change`
+    //     const newValue = isFormElement ? el.value : el[target] || el.getAttribute(target)
+    //     el.addEventListener(eventName, () => {
+    //       if (isFormElement) {
+    //         expression() = newValue
+    //       } else {
+    //         el.setAttribute(target, newValue)
+    //       }
+    //     })
+    //   })
+    // })
+
     // 初始化
-    for (const key in confObj.data) {
-      this.$effectMap[key].forEach(effect => effect())
+    this.init()
+  }
+
+  init (effectMap) {
+    for (const key in effectMap) {
+      if (effectMap[key] instanceof Set) {
+        effectMap[key].forEach(effect => effect())
+      } else {
+        this.init(effectMap[key])
+      }
     }
+  }
+
+  /**
+   * 解析绑定字符串
+   * @param {string} bindStr 绑定字符串，格式为：target1@{expression1} target2@{expression2}...
+   * @return {{target: string, expression: () => Function, origin?: string}[]} target: 绑定目标, expression: 由表达式生成的副作用函数，origin: 原始字符串
+   */
+  #resolveBindStr (bindStr) {
+    const bindList = bindStr.match(/[a-zA-Z0-9-]+@\{.+\}/g)
+    return bindList.map(bind => {
+      const pair = bind.split('@')
+      const target = pair[0]
+      const expression = new Function(`
+        'use strict'
+        return ${pair[1].slice(1, -1)}
+      `).bind(this)
+      return { target, expression, origin: pair[1].slice(1, -1) }
+    })
+  }
+
+  /**
+   * 注册副作用函数
+   * @param {Proxy} obj 代理对象
+   * @param {any} key 单向绑定对象键名
+   * @param {() => void} effect 副作用函数
+   */
+  #registerEffect (obj, key, effect) {
+    if (!this.$effectMap.has(obj)) {
+      this.$effectMap.set(obj, new Map())
+    }
+    if (!this.$effectMap.get(obj).has(key)) {
+      this.$effectMap.get(obj).set(key, new Set())
+    }
+    this.$effectMap.get(obj).get(key).add(effect)
+  }
+
+  /**
+   * 将嵌套对象结构转换为嵌套代理
+   * @param {object} obj 待处理对象
+   * @return {proxy} 代理对象
+   */
+  #createNestedProxy (obj, handler) {
+    const proxy = new Proxy(obj, handler)
+    for (const key in obj) {
+      if (obj[key] instanceof Object) {
+        proxy[key] = this.#createNestedProxy(obj[key], handler)
+      }
+    }
+    return proxy
   }
 }
 

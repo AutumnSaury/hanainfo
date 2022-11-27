@@ -1,11 +1,11 @@
 /**
  * 路由记录
- * @typedef {Object} Route 一条路由记录
+ * @typedef {Object} Route
  * @property {string?} title 页面标题
  * @property {string?} path 路径
  * @property {string?} componentName 组件名
  * @property {Route[]?} children 子路由
- * @property {string?} fullPath 完整路径
+ * @property {string} fullPath 完整路径
  * @property {string?} redirect 重定向路径
  */
 
@@ -30,29 +30,16 @@ class Router {
 
   handleHashChange () {
     window.removeEventListener('hashchange', this.handleHashChange)
-    const path = location.hash.slice(1)
-    const route = this.matchRouteByPath(path)
-    console.log(route)
-    if (route) {
-      this.push(route)
-    } else {
-      console.warn(`路由${path}不存在`)
-    }
+    this.push({ fullPath: location.hash.slice(1) })
     window.addEventListener('hashchange', this.handleHashChange)
   }
 
   initHash () {
     const path = location.hash.slice(1)
     if (path) {
-      window.dispatchEvent(new CustomEvent('route-change', {
-        detail: {
-          from: {},
-          to: this.matchRouteByPath(path)
-        }
-      }))
-      this.currentRoute = this.matchRouteByPath(path)
+      this.push({ fullPath: path })
     } else {
-      window.location.hash = '/'
+      this.push({ fullPath: '/' })
     }
   }
 
@@ -61,7 +48,11 @@ class Router {
    * @param {Route} route 路由记录，必须包含fullPath属性
    */
   push (route) {
-    if (!this.beforeEach(this.currentRoute, route)) {
+    const guard = this.beforeEach(this.currentRoute, route)
+    if (guard instanceof Object) {
+      this.push(guard)
+      return
+    } else if (!guard) {
       return
     }
     route = this.matchRouteByPath(route.fullPath)
@@ -192,7 +183,7 @@ customElements.define('router-view', class extends HTMLElement {
    * @returns {boolean} 匹配结果
    */
   isPathStartWith (fullPath) {
-    return fullPath.startsWith(this.path)
+    return fullPath?.startsWith(this.path) || false
   }
 })
 

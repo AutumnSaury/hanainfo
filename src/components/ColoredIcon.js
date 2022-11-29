@@ -7,7 +7,8 @@ customElements.define('colored-icon', class extends HTMLElement {
     :host {
       display: block;
       content: "";
-      background-color: ${this.color || 'black'};
+      background-color: var(--color, ${this.color || 'black'});
+      transition: 0.5s;
 
       mask-image: url(${this.src});
       mask-size: contain;
@@ -26,14 +27,24 @@ customElements.define('colored-icon', class extends HTMLElement {
 
   constructor () {
     super()
+    this.applyGlobalStyle()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
   }
 
-  // 虽然创建之后不会用到，但还是在这里声明一下
   static get observedAttributes () {
     return ['color', 'src', 'size', 'width', 'height']
   }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    switch (name) {
+      case 'color':
+        this.style.setProperty('--color', newValue)
+        break
+    }
+  }
+
+  // #region [ property getters ]
 
   get color () {
     return this.getAttribute('color')
@@ -54,4 +65,6 @@ customElements.define('colored-icon', class extends HTMLElement {
   get height () {
     return this.getAttribute('height')
   }
+
+  // #endregion
 })

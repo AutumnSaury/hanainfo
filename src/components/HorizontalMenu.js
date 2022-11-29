@@ -132,9 +132,9 @@ customElements.define('horizontal-menu', class extends HTMLElement {
       } else {
         menu.classList.remove('horizontal-menu_at-top')
         this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
-          item.setAttribute('color', 'black')
+          item.setAttribute('color', 'gray')
         })
-        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'black')
+        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'gray')
       }
 
       // 向下滚动时隐藏菜单，向上滚动时展示菜单

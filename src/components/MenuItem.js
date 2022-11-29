@@ -31,6 +31,8 @@ customElements.define('menu-item', class extends HTMLElement {
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
     this.coloredIcon = this.#shadowRoot.querySelector('#icon')
     this.activeTarget = false
+    this.color = 'white'
+    this.activeColor = 'var(--primary-color)'
     this.route = {}
   }
 
@@ -41,7 +43,18 @@ customElements.define('menu-item', class extends HTMLElement {
   attributeChangedCallback (name, oldValue, newValue) {
     switch (name) {
       case 'color':
-        this.style.setProperty('--color', newValue)
+        this.color = newValue
+        if (!this.active) {
+          this.coloredIcon.setAttribute('color', newValue)
+          this.style.setProperty('--color', newValue)
+        }
+        break
+      case 'active-color':
+        this.activeColor = newValue
+        if (this.active) {
+          this.coloredIcon.setAttribute('color', newValue)
+          this.style.setProperty('--color', newValue)
+        }
         break
       case 'active':
         if (this.hasAttribute('active')) {
@@ -93,14 +106,6 @@ customElements.define('menu-item', class extends HTMLElement {
 
   get icon () {
     return this.getAttribute('icon')
-  }
-
-  get color () {
-    return this.getAttribute('color')
-  }
-
-  get activeColor () {
-    return this.getAttribute('active-color')
   }
 
   // #endregion

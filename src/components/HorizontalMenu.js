@@ -121,19 +121,26 @@ customElements.define('horizontal-menu', class extends HTMLElement {
     this.#positionChecker = setInterval(() => {
       this.#thenPos = this.#nowPos
       this.#nowPos = window.scrollY
+      // 滚动条位于页面顶部
       if (this.#nowPos === 0) {
         menu.classList.add('horizontal-menu_at-top')
-        // menu.classList.remove('horizontal-menu_collapsed')
         this.style.removeProperty('top')
+        this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
+          item.setAttribute('color', 'white')
+        })
+        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'white')
       } else {
         menu.classList.remove('horizontal-menu_at-top')
+        this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
+          item.setAttribute('color', 'black')
+        })
+        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'black')
       }
 
+      // 向下滚动时隐藏菜单，向上滚动时展示菜单
       if (this.#nowPos > this.#thenPos) {
-        // menu.classList.add('horizontal-menu_collapsed')
         this.style.top = '-4rem'
       } else if (this.#nowPos < this.#thenPos) {
-        // menu.classList.remove('horizontal-menu_collapsed')
         this.style.removeProperty('top')
       }
     }, 500)

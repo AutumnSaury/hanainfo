@@ -10,12 +10,12 @@ customElements.define('colored-icon', class extends HTMLElement {
       background-color: var(--color, ${this.color || 'black'});
       transition: 0.5s;
 
-      mask-image: url(${this.src});
+      mask-image: var(--src);
       mask-size: contain;
       mask-repeat: no-repeat;
       mask-position: center;
 
-      -webkit-mask-image: url(${this.src});
+      -webkit-mask-image: var(--src);
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center;
@@ -40,6 +40,8 @@ customElements.define('colored-icon', class extends HTMLElement {
       case 'color':
         this.style.setProperty('--color', newValue)
         break
+      case 'src':
+        this.style.setProperty('--src', `url(${newValue})`)
     }
   }
 
@@ -50,7 +52,7 @@ customElements.define('colored-icon', class extends HTMLElement {
   }
 
   get src () {
-    return this.getAttribute('src')
+    return `url(${this.getAttribute('src')})`
   }
 
   get size () {

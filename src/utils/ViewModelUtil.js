@@ -98,27 +98,33 @@ class ViewModel {
     })
 
     // 处理双向绑定
-    // this.$twoWayBindedElements.forEach(el => {
-    //   // 分割绑定属性的字符串
-    //   const bindStr = el.getAttribute('bind-two-way')
-    //   const bindList = this.#resolveBindStr(bindStr)
-    //   bindList.forEach(({ target, expression }) => {
-    //     // 根据表达式创建副作用函数
-    //     this.#registeringEffect = () => { el[target] = expression() }
-    //     this.#registeringEffect()
-    //     // 对某些表单元素的特别处理
-    //     const isFormElement = ['input', 'textarea', 'select'].includes(el.tagName.toLowerCase())
-    //     const eventName = isFormElement ? 'input' : `${target}-change`
-    //     const newValue = isFormElement ? el.value : el[target] || el.getAttribute(target)
-    //     el.addEventListener(eventName, () => {
-    //       if (isFormElement) {
-    //         expression() = newValue
-    //       } else {
-    //         el.setAttribute(target, newValue)
-    //       }
-    //     })
-    //   })
-    // })
+    this.$twoWayBindedElements.forEach(el => {
+      // 分割绑定属性的字符串
+      const bindStr = el.getAttribute('bind-two-way')
+      const bindList = this.#resolveBindStr(bindStr)
+      bindList.forEach(({ target, expression, origin }) => {
+        // 获取表达式表示对象的父对象及其自身键名
+        const vmData = origin.split('.').slice(1)
+        const vmDataKey = vmData.pop()
+        const vmDataObj = vmData.reduce((acc, cur) => acc[cur], this)
+        // 根据表达式创建副作用函数
+        // 这里绑定的是Property
+        this.#registeringEffect = () => { el[target] = expression() }
+        this.#registeringEffect()
+        // 添加事件监听
+        // 监听发生在组件上的名为<Property Key>-change的事件
+        // 对部分表单组件作特殊处理，监听其input事件
+        if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
+          el.addEventListener('input', () => {
+            vmDataObj[vmDataKey] = el[target]
+          })
+        } else {
+          el.addEventListener(`${target}-change`, () => {
+            vmDataObj[vmDataKey] = el[target]
+          })
+        }
+      })
+    })
 
     // 初始化
     this.init()
@@ -144,12 +150,21 @@ class ViewModel {
     return bindList.map(bind => {
       const pair = bind.split('@')
       const target = pair[0]
-      const expression = new Function(`
-        'use strict'
-        return ${pair[1].slice(1, -1)}
-      `).bind(this)
+      const expression = this.#createEffectByString(pair[1].slice(1, -1))
       return { target, expression, origin: pair[1].slice(1, -1) }
     })
+  }
+
+  /**
+   * 使用字符串生成副作用函数
+   * @param {string} expression 表达式字符串
+   * @returns {() => Function} 由表达式生成的副作用函数
+   */
+  #createEffectByString (expression) {
+    return new Function(`
+      'use strict'
+      return ${expression}
+    `).bind(this)
   }
 
   /**

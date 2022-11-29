@@ -26,7 +26,6 @@ customElements.define('menu-item', class extends HTMLElement {
 
   constructor () {
     super()
-    this.applyGlobalStyle()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
     this.coloredIcon = this.#shadowRoot.querySelector('#icon')

@@ -27,7 +27,6 @@ customElements.define('colored-icon', class extends HTMLElement {
 
   constructor () {
     super()
-    this.applyGlobalStyle()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
   }

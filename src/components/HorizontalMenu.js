@@ -100,7 +100,6 @@ customElements.define('horizontal-menu', class extends HTMLElement {
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
     this.atTop = false
-    this.applyGlobalStyle()
   }
 
   static get observedAttributes () {

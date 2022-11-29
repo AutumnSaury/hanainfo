@@ -12,5 +12,7 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'no-new-func': 'warn',
+    'no-eval': 'warn'
   }
 }

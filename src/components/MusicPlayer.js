@@ -451,7 +451,7 @@ customElements.define('music-player', class extends HTMLElement {
   }
 
   prev () {
-    this.switchToTrack(this.currentTrack === 0 ? playList.length : this.currentTrack - 1)
+    this.switchToTrack(this.currentTrack === 1 ? playList.length : this.currentTrack - 1)
   }
 
   next () {

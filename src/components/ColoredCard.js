@@ -79,6 +79,7 @@ customElements.define('colored-card', class extends HTMLElement {
       margin: 12px;
       max-width: 120%;
       overflow: auto;
+      text-indent: 2em;
     }
 
     ::-webkit-scrollbar {
@@ -119,6 +120,9 @@ customElements.define('colored-card', class extends HTMLElement {
     if (!this.hasAttribute('color')) {
       this.style.setProperty('--bg-color', this.avgColor)
       this.style.setProperty('--inverted-color', invertColor(this.avgColor))
+    } else {
+      this.style.setProperty('--bg-color', this.color)
+      this.style.setProperty('--inverted-color', invertColor(this.color))
     }
     this.style.setProperty('--image-width', this.imageWidth)
   }

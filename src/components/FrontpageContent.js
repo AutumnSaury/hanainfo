@@ -1,28 +1,179 @@
+import './AutumnSwiper.js'
+import './ColoredCard.js'
+import './TitledImage.js'
+import useArtsListStore from '../stores/artsListStore.js'
+
 customElements.define('frontpage-content', class extends HTMLElement {
   #shadowRoot
   #template = /* html */ `
-  <div class="parent">
-    <div class="div1"></div>
-    <div class="div2"></div>
-    <div class="div3"></div>
-    <div class="div4"></div>
-    <div class="div5"></div>
-    <div class="div6"></div>
-    <div class="div7"></div>
-    <div class="div8"></div>
-    <div class="div9"></div>
-    <div class="div10"></div>
-    <div class="div11"></div>
-    <div class="div12"></div>
+  <div class="content__grid">
+    <div class="grid__item--swiper-wrapper grid__item">
+      <autumn-swiper
+        pause-on-hover
+        autoplay
+        interval="5000"
+      ></autumn-swiper>
+    </div>
+    <div class="grid__item--character-info grid__item ci1">
+      <colored-card
+        src="src/assets/images/characters/jintan.jpg"
+        image-position="left"
+        maintitle="宿海仁太"
+        subtitle="じんたん"
+      >
+        幼年时成绩优秀、体育优异，创立了超平和Busters，性格相当活泼，是众人的领袖，在面码死后变得不善与人交流。是个左撇子。
+        秩父市立绿之丘第三中学校毕业，曾在中学时代得过校内马拉松第三名及市内硬笔展银赏。
+        高中没能考上第一志愿的明星高中，拒绝入读他所考上在其住家附近的高中。
+        外出时为了不被国中同学认出，总是配戴着针织帽和粗黑框眼镜才出门。有许多件不同汉字的T-shirt。
+      </colored-card>
+    </div>
+    <div class="grid__item--character-info grid__item ci2">
+      <colored-card
+        src="src/assets/images/characters/menma.jpg"
+        image-position="right"
+        maintitle="本间芽衣子"
+        subtitle="めんま"
+      >
+        皮肤白皙、银发蓝瞳、身材娇小的少女。性格天真，是大家的吉祥物。有着独特的说话方式。总是想着别人，即使心里很难受也傻呵呵地笑，每次哭都是为了别人。
+      </colored-card>
+    </div>
+    <div class="grid__item--character-info grid__item ci3">
+      <colored-card
+        src="src/assets/images/characters/tsuruko_19385432.png"
+        image-position="left"
+        maintitle="鹤见知利子"
+        subtitle="つるこ"
+      >
+        具有作为成年人的性格，喜好读书。与松雪集入读同一间高中学校，学业成绩为年级第四。对人态度有些冷漠，说话也有些刻薄，但没有恶意，其实内心很善良而且冷静，也有可爱的一面。喜欢雪集，而且对雪集相当了解。集去买女性用品时常叫她同去当掩护，知道雪集假扮芽间。
+        有优秀的观察力，知道安城鸣子容易受人影响的缺点（从儿时起就一直在模仿芽衣子）和集暗中做的事。正因为在早些阶段就察觉到集的变异，为此而向仁太要求协助，最后在行动上成功拯救集的心理。
+      </colored-card>
+    </div>
+    <div class="grid__item--character-info grid__item ci4">
+      <colored-card
+        src="src/assets/images/characters/yukiatsu_19230237.jpg"
+        image-position="right"
+        maintitle="松雪集"
+        subtitle="ゆきあつ"
+      >
+      个性好强，很早就对仁太抱有竞争意识，认为自己在各方面都能胜过他。
+      童年曾勇敢地向为了挽留而追赶仁太的芽衣子告白，并拿出一只有粉色花的发夹要送给芽衣子，但却被敷衍（拒绝）。
+      之后更认为自己的告白是把芽衣子给害死的原因，并以强大的罪恶感看待自己，从此一直坚持是自己害死了芽衣子。
+      在十年后更因为希望芽衣子就算是报复或诅咒也好，也要出现在自己的面前，进而做出了一些扭曲的举动例如扮成芽衣子的行为。最后却在知利子的机智之下，暴露在仁太等人的面前。
+      而在这个契机之下，其扭曲的心理终于得以冷静，假扮成芽衣子的举动也终于停止，事后对知利子以言语表达感谢。
+      </colored-card>
+    </div>
+    <div class="grid__item--character-info grid__item ci5">
+      <colored-card
+        src="src/assets/images/characters/anaru_18667829.jpg"
+        image-position="left"
+        maintitle="安城鸣子"
+        subtitle="あなる"
+      >
+        看上去很时髦的女高中生，有些傲娇。容易害羞。与仁太同班，从小的时候就喜欢仁太。
+        自己童年时因为尚不知道其昵称"安鸣"不雅，导致之后闹出很多笑话，使得长大后已明了其意思的自己不是很喜欢被这样叫，而且被朋友以外的人这样称呼时会惊慌失措并急忙否认。
+        最喜欢的是本间芽衣子，最讨厌的也是本间芽衣子。现在，在游戏商店打工。喜欢随波逐流但又非常想改掉这个毛病。从小收集很多漫画还有游戏碟，到现在也是这样。
+      </colored-card>
+    </div>
+    <div class="grid__item--character-info grid__item ci6">
+      <colored-card
+        src="src/assets/images/characters/poppo18478081.jpg"
+        image-position="right"
+        maintitle="久川铁道"
+        subtitle="ぽっぽ"
+      >
+        昔日个头娇小，有如大家的弟弟。
+        现在是最强壮的男人，虽然外表变化很大，但内心一点没变。
+        小时候一直认为自己是被人排挤的，所以很珍惜6人的友情。
+        超和平Busters6人中年纪最小的一个，没有去高中读书，正在环游世界的自由人。
+        在仁太找寻面码的过程中，与仁太相见。
+      </colored-card>
+    </div>
+    <div class="grid__item--activity grid__item a1">
+      <titled-image
+        src="src/assets/images/activities/anohana-fes.webp"
+        href="https://www.bilibili.com/video/av668501997"
+      >
+        演唱会Anohana Fes.
+      </titled-image>
+    </div>
+    <div class="grid__item--activity grid__item a2">
+      <titled-image
+        src="src/assets/images/activities/chichibu-railway.jpg"
+        href="https://www.chichibu-railway.co.jp/blog/news/210403-2/"
+      >
+        秩父铁道痛火车
+      </titled-image>
+    </div>
+    <div class="grid__item--activity grid__item a3">
+      <titled-image
+        src="src/assets/images/activities/radio.png"
+        href="https://10th.anohana.jp/radio/"
+      >
+        广播剧「あの花ラジオ」最终回放送
+      </titled-image>
+    </div>
+    <div class="grid__item--activity grid__item a4">
+      <titled-image
+        src="src/assets/images/activities/10th-anniversary.png"
+        href="https://10th.anohana.jp/"
+      >
+        十周年纪念
+      </titled-image>
+    </div>
+    <div class="grid__item--activity grid__item a5">
+      <titled-image
+      src="src/assets/images/activities/stage.jpg"
+      href="https://twitter.com/anohanastage/status/1492060847916478466"
+      >
+        舞台剧「未闻花名」DVD发售
+    </titled-image>
+    </div>
+    <div class="grid__item--banner grid__item">
+      <autumn-swiper
+        pauseonhover
+        autoplay
+      >
+      </autumn-swiper>
+    </div>
+    <div class="grid__item--brief grid__item">
+      <colored-card
+        src="src/assets/images/anohana.png"
+        maintitle="剧情简介"
+        subtitle="「あの日見た花の名前を僕達はまだ知らない。」"
+        image-position="right"
+        color="#ffffff"
+        image-width="30%"
+      >
+        昔日孩童时期总是一起结伴同玩的6位好朋友，因女主角·本间芽衣子的意外死亡而各自心存芥蒂导致关系疏离。但某一天，虽然各种事物都在变化，但唯独她不变的芽衣子却突然出现在已像隐蔽青年般的主人公·宿海仁太面前，并要仁太帮助她完成心愿从而成佛。在这个过程中昔日的好友，散发着辣妹气息的安城鸣子、进入了以大学为目标的学校的松雪集和鹤见知利子、以及在高中便放弃升学现正四处游历的久川铁道慢慢加入到帮助芽间完成心愿的队伍中来。而在大家努力帮助她完成心愿的同时，十年前发生的种种往事以及彼此心中的秘密也渐渐浮现在大家面前
+        仁太是超和平buster的队长，玩伴都喜欢吃仁太母亲的蒸松糕，后来母亲病重住院，仁太没有安慰，却冲母亲抱怨，为什么不做蒸馒头，然后转身就走。后来母亲对芽间说，仁太是个坚强的孩子，不想在自己面前哭，让自己担心，但她希望儿子该哭的时候哭出来。于是芽间答应她要让仁太哭。雪集喜欢芽间和安鸣喜欢仁太，他们计划挑拨一下仁太和芽间的感情，于是大家在秘密基地时，安鸣问仁太：“你喜欢芽间么？”仁太很慌张地回复：“谁会喜欢这种丑女？”芽间听到后却只是笑笑（那笑容真让人心疼）。仁太跑出秘密基地，芽间去追。受了仁太妈妈的愿望让仁太哭，芽间找大家商量时、不小心失足掉入河中，从此只能出现在大家的记忆中……
+        仁太之后也没能专心学习，因为他总能想起芽间，而这个幽灵般的芽间也一直在他身边，所以，尽管脑子好使，仁太却进了个垃圾高中。芽间突然说自己好像要实现一个愿望，要超和平buster的伙伴一起实现。大家慢慢重新走到一起，为了芽间的愿望而努力，却一次次猜错愿望。最后大家认为芽间想做个烟花，要成佛升天转世。然而，烟花绽放之后，仁太却发现芽间没有升天，愿望再次猜错。当晚，大家说明了自己要为芽间的梦想而努力的动机，其实都是为了自己。
+        于是仁太回家问问芽间自己的想法。然而，芽间感觉到自己快消失了，她说：“我的愿望就要实现了”。仁太将她背到秘密基地，却看不到那个幽灵的芽间了，大家去森林里寻找。芽间努力的在日记上写下了自己对大家的喜爱。终于，清晨时候，大家都看到了芽间，芽间的愿望实现了，就是当初答应仁太母亲——要仁太该哭的时候，就哭出来……
+      </colored-card>
+    </div>
   </div>
   `
 
   #style = /* css */ `
   :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100vw;
     height: 100vh;
+    cursor: pointer;
+  }
+
+  :host:before {
+    content: "";
     background-color: var(--primary-color);
+
+    position: absolute;
+    z-index: -1;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
     mask-image: url("src/assets/images/flower-rain.svg");
     mask-size: cover;
@@ -36,36 +187,95 @@ customElements.define('frontpage-content', class extends HTMLElement {
     -webkit-mask-attachment: fixed;
   }
 
-  .parent {
+  .content__grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
 
     width: 90vw;
-    height: 100vh;
+    height: 90vh;
     scroll-margin-top: 0;
   }
 
-  .div1 { grid-area: 1 / 5 / 3 / 7; }
-  .div2 { grid-area: 1 / 7 / 3 / 9; }
-  .div3 { grid-area: 3 / 5 / 5 / 7; }
-  .div4 { grid-area: 3 / 7 / 5 / 9; }
-  .div5 { grid-area: 1 / 1 / 6 / 5; }
-  .div6 { grid-area: 6 / 1 / 7 / 2; }
-  .div7 { grid-area: 6 / 2 / 7 / 3; }
-  .div8 { grid-area: 6 / 3 / 7 / 4; }
-  .div9 { grid-area: 6 / 4 / 7 / 5; }
-  .div10 { grid-area: 5 / 5 / 9 / 9; }
-  .div11 { grid-area: 7 / 3 / 9 / 5; }
-  .div12 { grid-area: 7 / 1 / 9 / 3; }
+  .grid__item {
+    background-color: gray;
+    height: calc(100% - 5px * 2);
+    width: calc(100% - 5px * 2);
+    margin: 5px;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14) , 0px 3px 1px -2px rgba(0,0,0,0.12) , 0px 1px 5px 0px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .grid__item--swiper-wrapper {
+    grid-area: 1 / 1 / 6 / 5;
+  }
+
+  .grid__item--swiper-wrapper > autumn-swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ci1 { grid-area: 1 / 5 / 3 / 7; }
+  .ci2 { grid-area: 1 / 7 / 3 / 9; }
+  .ci3 { grid-area: 3 / 5 / 5 / 7; }
+  .ci4 { grid-area: 3 / 7 / 5 / 9; }
+  .ci5 { grid-area: 5 / 5 / 7 / 7; }
+  .ci6 { grid-area: 5 / 7 / 7 / 9; }
+
+  .grid__item--character-info > colored-card {
+    height: 100%;
+    width: 100%;
+  }
+
+  .a1 { grid-area: 6 / 1 / 7 / 2; }
+  .a2 { grid-area: 6 / 2 / 7 / 3; }
+  .a3 { grid-area: 6 / 3 / 7 / 4; }
+  .a4 { grid-area: 6 / 4 / 7 / 5; }
+  .a5 { grid-area: 7 / 1 / 9 / 3; }
+
+  .grid__item--banner {
+    grid-area: 7 / 3 / 9 / 5;
+  }
+
+  .grid__item--banner > autumn-swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .grid__item--brief { grid-area: 7 / 5 / 9 / 9; }
+
+  .grid__item--brief > colored-card {
+    width: 100%;
+    height: 100%;
+  }
   `
 
   constructor () {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
+    this.artSwiper = this.#shadowRoot.querySelector('.grid__item--swiper-wrapper > autumn-swiper')
+    this.bannerSwiper = this.#shadowRoot.querySelector('.grid__item--banner > autumn-swiper')
+
+    const artList = useArtsListStore()
+    artList.forEach(src => {
+      const item = document.createElement('autumn-swiper-item')
+      item.innerHTML = /* html */ `
+        <img src="${src}" alt="${src.match(/\d+(?=\.jpg)/)}" />
+      `
+      this.artSwiper.appendChild(item)
+    })
+
+    for (let i = 1; i < 8; ++i) {
+      const item = document.createElement('autumn-swiper-item')
+      item.innerHTML = /* html */ `
+        <img src="src/assets/images/banners/${i}.webp" alt="${i}" style="object-position: top"/>
+      `
+      this.bannerSwiper.appendChild(item)
+    }
   }
 
   static get observedAttributes () {

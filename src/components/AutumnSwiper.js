@@ -10,105 +10,103 @@ customElements.define('autumn-swiper', class extends HTMLElement {
     <div class="autumn-swiper__prev-btn">&lt;</div>
     <div class="autumn-swiper__next-btn">&gt;</div>
   `
-  #style = `
-    <style>
-      :host {
-        --current: 1;
-        --item-height: 100%;
-        --item-width: 100%;
-        display: block;
-        position: relative;
-        height: 600px;
-        width: 1000px;
-        overflow: hidden;
-      }
+  #style = /* css */`
+  :host {
+    --current: 1;
+    --item-height: 100%;
+    --item-width: 100%;
+    display: block;
+    position: relative;
+    height: 600px;
+    width: 1000px;
+    overflow: hidden;
+  }
 
-      .autumn-swiper__items {
-        overflow: hidden;
-        height: 100%;
-        width: 100%;
-      }
+  .autumn-swiper__items {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
 
-      .autumn-swiper__indicators {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2rem;
+  .autumn-swiper__indicators {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2rem;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-      .autumn-swiper__indicator {
-        width: 2rem;
-        height: 0.25rem;
-        background-color: lightgray;
-        margin: 0 0.25rem;
-        border-radius: 5px;
-        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14) , 0px 3px 1px -2px rgba(0,0,0,0.12) , 0px 1px 5px 0px rgba(0,0,0,0.2);
-        transition: 0.5s;
-      }
+  .autumn-swiper__indicator {
+    width: 2rem;
+    height: 0.25rem;
+    background-color: lightgray;
+    margin: 0 0.25rem;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14) , 0px 3px 1px -2px rgba(0,0,0,0.12) , 0px 1px 5px 0px rgba(0,0,0,0.2);
+    transition: 0.5s;
+  }
 
-      .autumn-swiper__indicator:hover,
-      .autumn-swiper__indecator_current {
-        background-color: white;
-        transition: 0.5s;
-      }
+  .autumn-swiper__indicator:hover,
+  .autumn-swiper__indecator_current {
+    background-color: white;
+    transition: 0.5s;
+  }
 
-      .autumn-swiper__prev-btn,
-      .autumn-swiper__next-btn {
-        position: absolute;
-        top: calc(50% - 1.5rem);
-        width: 3rem;
-        height: 3rem;
-        background-color: #00000060;
-        color: #fff;
-        font-size: 1.5rem;
-        line-height: 3rem;
-        text-align: center;
-        border-radius: 50%;
-        cursor: pointer;
-        user-select: none;
-      }
+  .autumn-swiper__prev-btn,
+  .autumn-swiper__next-btn {
+    position: absolute;
+    top: calc(50% - 1.5rem);
+    width: 3rem;
+    height: 3rem;
+    background-color: #00000060;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+  }
 
-      .autumn-swiper__prev-btn {
-        left: 1rem;
-      }
+  .autumn-swiper__prev-btn {
+    left: 1rem;
+  }
 
-      .autumn-swiper__next-btn {
-        right: 1rem;
-      }
+  .autumn-swiper__next-btn {
+    right: 1rem;
+  }
 
-      slot {
-        display: flex;
-        height: 100%;
-        position: absolute;
-        transition: left 0.5s;
-        left: calc(-100% * (var(--current, 1) - 1));
-      }
+  slot {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    transition: left 0.5s;
+    left: calc(-100% * (var(--current, 1) - 1));
+  }
 
-      ::slotted(autumn-swiper-item) {
-        width: var(--item-width);
-        height: var(--item-width);
-        flex-grow: 1;
-      }
+  ::slotted(autumn-swiper-item) {
+    width: var(--item-width);
+    height: var(--item-width);
+    flex-grow: 1;
+  }
 
-      .notransition {
-        -webkit-transition: none !important;
-        -moz-transition: none !important;
-        -o-transition: none !important;
-        transition: none !important;
-      }
-    </style>
+  .notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+  }
   `
 
   constructor () {
     super()
 
     this.$shadowRoot = this.attachShadow({ mode: 'closed' })
-    this.$shadowRoot.innerHTML = this.#style + this.#template
+    this.$shadowRoot.innerHTML = `<style>${this.#style}</style>${this.#template}`
     this.$itemSlot = this.$shadowRoot.querySelector('slot')
 
     const prevBtn = this.$shadowRoot.querySelector('.autumn-swiper__prev-btn')
@@ -329,17 +327,26 @@ customElements.define('autumn-swiper-item', class extends HTMLElement {
     <slot></slot>
   `
 
-  #style = `
-    <style>
+  #style = /* css */ `
       :host {
         display: block;
       }
-    </style>
+
+      ::slotted(*) {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      ::slotted(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
   `
 
   constructor () {
     super()
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.innerHTML = this.#template + this.#style
+    this.shadowRoot.innerHTML = `<style>${this.#style}</style>${this.#template}`
   }
 })

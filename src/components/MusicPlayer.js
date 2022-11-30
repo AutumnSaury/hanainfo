@@ -67,7 +67,7 @@ const playList = [
   },
   {
     title: 'Bored With Loose Friends',
-    src: 'src/assets/music/When Bored With Loose Friends.mp3',
+    src: 'src/assets/music/Bored With Loose Friends.mp3',
     cover: 'src/assets/images/album-cover.jpg',
     duration: '1:37',
     artist: 'REMEDIOS',

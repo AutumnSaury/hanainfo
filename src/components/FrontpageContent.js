@@ -151,29 +151,6 @@ customElements.define('frontpage-content', class extends HTMLElement {
     cursor: pointer;
   }
 
-  :host:before {
-    content: "";
-    background-color: var(--primary-color);
-
-    position: absolute;
-    z-index: -1;
-    bottom: -100%;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    mask-image: url("src/assets/images/flower-rain.svg");
-    mask-size: cover;
-    mask-repeat: no-repeat;
-    mask-position: center;
-
-    -webkit-mask-image: url("src/assets/images/flower-rain.svg");
-    -webkit-mask-size: cover;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    -webkit-mask-attachment: fixed;
-  }
-
   .content__grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);

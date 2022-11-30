@@ -1,5 +1,6 @@
 import '../components/ColoredIcon.js'
 import '../components/FrontpageContent.js'
+import '../components/FrontpageBriefIntro.js'
 
 customElements.define('frontpage-view', class extends HTMLElement {
   #shadowRoot
@@ -13,11 +14,30 @@ customElements.define('frontpage-view', class extends HTMLElement {
       <img class="banner__curve" alt="curve" src="src/assets/images/curve.svg">
       <colored-icon class="banner__down-arrow" src="src/assets/icons/arrows/arrow-down-bold.svg" color="white"></colored-icon>
     </div>
+    <frontpage-brief-intro></frontpage-brief-intro>
     <frontpage-content></frontpage-content>
   `
   #style = /* css */ `
     :host {
       width: 100vw;
+      height: 300vh
+    }
+
+    :host:before {
+      content: "";
+      background-color: var(--primary-color);
+      position: fixed;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+  
+      mask-image: url("src/assets/images/flower-rain.svg");
+      mask-repeat: repeat-y;
+      mask-size: contain;
+  
+      -webkit-mask-image: url("src/assets/images/flower-rain.svg");
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: repeat-y;
     }
 
     .frontpage__banner {

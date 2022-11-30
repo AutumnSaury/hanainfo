@@ -43,7 +43,7 @@ customElements.define('titled-image', class extends HTMLElement {
     .overlay__title {
       display: block;
       font-size: 12px;
-      padding: 0 12px;
+      padding: 6px;
       color: white;
     }
   `

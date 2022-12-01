@@ -146,6 +146,9 @@ class ViewModel {
    * @return {{target: string, expression: () => Function, origin?: string}[]} target: 绑定目标, expression: 由表达式生成的副作用函数，origin: 原始字符串
    */
   #resolveBindStr (bindStr) {
+    if (!bindStr) {
+      return []
+    }
     const bindList = bindStr.match(/[a-zA-Z0-9-]+@\{.+\}/g)
     return bindList.map(bind => {
       const pair = bind.split('@')

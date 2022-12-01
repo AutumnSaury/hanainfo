@@ -6,7 +6,7 @@
  * @property {string?} componentName 组件名
  * @property {Route[]?} children 子路由
  * @property {string} fullPath 完整路径
- * @property {string?} redirect 重定向路径
+ * @property {(from: Route, to: Route) => boolean | Route} before 路由守卫
  */
 
 // 路由类
@@ -62,7 +62,6 @@ class Router {
       return
     }
     if (route.before) {
-      console.log(route)
       const redirect = route.before(this.currentRoute, route)
       if (redirect instanceof Object) {
         this.push(redirect)

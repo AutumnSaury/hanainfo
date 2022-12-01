@@ -34,6 +34,10 @@ function invertColor (hex, bw = true) {
     return ('00' + str).slice(-2)
   }
 
+  if (hex === '#ffffff' || hex === '#FFFFFF') {
+    return '#000000'
+  }
+
   if (hex.indexOf('#') === 0) {
     hex = hex.slice(1)
   }

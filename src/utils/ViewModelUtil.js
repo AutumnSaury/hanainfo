@@ -150,6 +150,9 @@ class ViewModel {
       return []
     }
     const bindList = bindStr.match(/[a-zA-Z0-9-]+@\{.+\}/g)
+    if (!bindList) {
+      return []
+    }
     return bindList.map(bind => {
       const pair = bind.split('@')
       const target = pair[0]

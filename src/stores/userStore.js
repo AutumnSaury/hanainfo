@@ -8,38 +8,28 @@
  * @property {string} avatar 头像
  */
 
-/**
- * @type {User}
- */
-const user = {
-  name: '秋サンマ',
-  gender: 'male',
-  password: '111',
-  email: 'autumnsaury@outlook.com',
-  phone: '111',
-  avatar: 'https://cravatar.cn/avatar/c8288b14c875abb75c7c82d7785d7545'
-}
+const user = {}
+Object.assign(user, JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}'))
 
 /**
  * 用户信息Store Hook
- * @param {'session' | 'local' | null} persistType 数据持久化类型，默认不进行持久化
+ * @param {'session' | 'local'} persistType 数据持久化类型，默认存入sessionStorage
  * @return {proxy<User>}
  */
-function useUserStore (persistType) {
+function useUserStore (persistType = 'session') {
   return new Proxy(user, {
     get (target, key) {
-      if (Object.keys.length === 0) {
-        Object.assign(target, JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user')) || {})
-      }
       return target[key]
     },
     set (target, key, value) {
       target[key] = value
       if (persistType === 'session') {
-        sessionStorage.setItem(user, JSON.stringify(target))
+        console.log('session')
+        sessionStorage.setItem('user', JSON.stringify(target))
       } else if (persistType === 'local') {
-        localStorage.setItem(user, JSON.stringify(target))
+        localStorage.setItem('user', JSON.stringify(target))
       }
+      return true
     }
   })
 }

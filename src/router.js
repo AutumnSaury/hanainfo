@@ -5,6 +5,11 @@ import './views/ArticlesView.js'
 import './views/OthersView.js'
 import './views/AboutView.js'
 import './views/SignView.js'
+import './components/sign/SignInForm.js'
+import './components/sign/RegisterForm.js'
+
+import { useUserStore } from './stores/userStore.js'
+
 /**
  * 路由记录
  * @typedef {Object} Route
@@ -13,7 +18,6 @@ import './views/SignView.js'
  * @property {string?} componentName 组件名
  * @property {Route[]?} children 子路由
  * @property {string} fullPath 完整路径
- * @property {string?} redirect 重定向路径
  * @property {(from: Route, to: Route) => boolean | Route} before 路由守卫
  */
 
@@ -25,7 +29,24 @@ const routes = [
   {
     title: '登录/注册',
     path: 'sign',
-    componentName: 'sign-view'
+    componentName: 'sign-view',
+    before (from, to) {
+      if (to.fullPath === '/sign') {
+        return { fullPath: '/sign/sign-in' }
+      }
+    },
+    children: [
+      {
+        title: '登录',
+        path: 'sign-in',
+        componentName: 'sign-in-form'
+      },
+      {
+        title: '注册',
+        path: 'register',
+        componentName: 'register-form'
+      }
+    ]
   },
   {
     title: '',
@@ -66,7 +87,7 @@ const routes = [
  * @return {boolean} 是否已登录
  */
 function isAuthenticated () {
-  return true
+  return !!Object.keys(useUserStore()).length
 }
 
 window.$router = new Router(routes)
@@ -76,18 +97,17 @@ window.$router = new Router(routes)
  * @return {boolean | Route}
  */
 window.$router.beforeEach = (from, to) => {
-  // console.log(from, to)
+  console.log(from, to)
   if (to.fullPath === '/') {
     return {
       fullPath: '/main'
     }
   }
 
-  if (!isAuthenticated() && to.fullPath !== '/sign') {
+  if (!isAuthenticated() && !to.fullPath.startsWith('/sign')) {
     alert('请先登录')
-    return {
-      fullPath: '/sign'
-    }
+    console.log('redirected')
+    return { fullPath: '/sign/sign-in' }
   }
 
   return true

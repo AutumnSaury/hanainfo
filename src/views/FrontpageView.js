@@ -8,7 +8,7 @@ customElements.define('frontpage-view', class extends HTMLElement {
     <div class="frontpage__banner">
       <div class="banner__title">
       <span>HANA</span>INFO
-        <colored-icon class="banner__flower" src="src/assets/icons/forget-me-not.svg" color="dodgerblue"></colored-icon>
+        <colored-icon class="banner__flower" src="src/assets/icons/forget-me-not.svg" color="var(--primary-color)"></colored-icon>
       </div>
       <div class="banner__subtitle">Anohana情报站</div>
       <img class="banner__curve" alt="curve" src="src/assets/images/curve.svg">

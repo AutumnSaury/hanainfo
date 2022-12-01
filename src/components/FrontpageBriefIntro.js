@@ -29,7 +29,7 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       justify-content: flex-start;
       height: 100vh;
       width: 100vw;
-      background-image: url("src/assets/images/anohana-arts/18231910.jpg");
+      background-image: url("src/assets/images/bg2_52609969.jpg");
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -40,19 +40,18 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       color: white;
       display: flex;
       flex-direction: column;
-      width: 50%;
+      width: 70%;
       margin: 5rem;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 72px;
       margin: 0;
     }
 
     p {
       text-indent: 2em;
       font-size: 18px;
-      filter: drop-shadow(0 0 0.5rem black);
     }
 
     img {
@@ -71,18 +70,5 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
-  }
-
-  static get observedAttributes () {
-    return []
-  }
-
-  attributeChangedCallback (name, oldValue, newValue) {
-    switch (name) {
-      case '':
-        break
-      default:
-        break
-    }
   }
 })

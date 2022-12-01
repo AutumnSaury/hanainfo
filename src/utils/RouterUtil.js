@@ -48,25 +48,38 @@ class Router {
    * @param {Route} route 路由记录，必须包含fullPath属性
    */
   push (route) {
-    const guard = this.beforeEach(this.currentRoute, route)
-    if (guard instanceof Object) {
-      this.push(guard)
+    const redirect = this.beforeEach(this.currentRoute, route)
+    if (redirect instanceof Object) {
+      this.push(redirect)
       return
-    } else if (!guard) {
+    } else if (!redirect) {
       return
     }
+
     route = this.matchRouteByPath(route.fullPath)
     if (!route) {
       console.warn(`路由${route.fullPath}不存在`)
       return
     }
+    if (route.before) {
+      console.log(route)
+      const redirect = route.before(this.currentRoute, route)
+      if (redirect instanceof Object) {
+        this.push(redirect)
+        return
+      } else if (!redirect) {
+        return
+      }
+    }
     // 关闭对hashchange的监听
     window.removeEventListener('hashchange', this.handleHashChange)
     window.location.hash = route.fullPath
+    const fromRoute = this.currentRoute
+    this.currentRoute = route
     window.dispatchEvent(new CustomEvent('route-change', {
       detail: {
-        from: this.currentRoute,
-        to: route
+        from: fromRoute,
+        to: this.currentRoute
       }
     }))
     // 打开对hashchange的监听
@@ -127,20 +140,13 @@ customElements.define('router-view', class extends HTMLElement {
     :host {
       display: block;
       width: 100%;
-      height: 100%;
-    }
-
-    slot {
-      display: block;
-      width: 100%;
-      height: 100%;
     }
   `
   constructor () {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'open', slotAssignment: 'manual' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
-    this.currentView = ''
+    this.currentRoute = {}
   }
 
   static get observedAttributes () {
@@ -156,23 +162,35 @@ customElements.define('router-view', class extends HTMLElement {
   }
 
   connectedCallback () {
+    const childPattern = new RegExp(`(?<=${this.path})[\\w-]+`)
     window.addEventListener('route-change', ev => {
-      const { from, to } = ev.detail
-      console.log(from, to)
-      const childPattern = new RegExp(`(?<=${this.path})[\\w-]+`)
+      const { to } = ev.detail
+      // console.log(from, to)
       if (this.isPathStartWith(to.fullPath) &&
-        from?.fullPath?.match(childPattern)[0] !== to.fullPath.match(childPattern)[0]) {
-        this.changeView(to.componentName)
+      this.currentRoute.fullPath?.match(childPattern)[0] !== to.fullPath.match(childPattern)[0]) {
+        const newRoute = window.$router.matchRouteByPath(this.path + to.fullPath.match(childPattern)[0])
+        this.switchView(newRoute.componentName)
+        this.currentRoute = newRoute
       }
     })
+
+    const targetRoute = window.$router.currentRoute
+    if (Object.keys(targetRoute)?.length !== 0) {
+      const newView = targetRoute.fullPath.match(childPattern)?.[0]
+      if (newView) {
+        const newRoute = window.$router.matchRouteByPath(this.path + newView)
+        this.switchView(newRoute.componentName)
+        this.currentRoute = newRoute
+      }
+    }
   }
 
   /**
    * 切换视图
    * @param {string} view 新视图
    */
-  changeView (view) {
-    console.log('changeView', view)
+  switchView (view) {
+    // console.log('changeView', view)
     this.#template = `<${view}></${view}>`
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
   }

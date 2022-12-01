@@ -14,6 +14,7 @@ import './views/SignView.js'
  * @property {Route[]?} children 子路由
  * @property {string} fullPath 完整路径
  * @property {string?} redirect 重定向路径
+ * @property {(from: Route, to: Route) => boolean | Route} before 路由守卫
  */
 
 /**
@@ -30,6 +31,12 @@ const routes = [
     title: '',
     path: 'main',
     componentName: 'framework-view',
+    before (from, to) {
+      console.log(to)
+      if (to.fullPath === '/main') {
+        return { fullPath: '/main/frontpage' }
+      }
+    },
     children: [
       {
         title: '首页',

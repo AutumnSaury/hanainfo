@@ -169,7 +169,7 @@ customElements.define('register-form', class extends HTMLElement {
           }
 
           // eslint-disable-next-line no-undef
-          this.data.form.avatar = `https://cravatar.cn/avatar/${MD5(email)}?size=120&d=404`
+          this.data.form.avatar = `https://cravatar.cn/avatar/${MD5(email)}?size=120`
 
           const { addUser, findUser } = useUserListStore()
           let flag = true

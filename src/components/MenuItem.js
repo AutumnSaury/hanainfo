@@ -22,6 +22,16 @@ customElements.define('menu-item', class extends HTMLElement {
       margin-left: 0.5rem;
       transition: 0.5s
     }
+
+    colored-icon:hover,
+    colored-icon:has(+ slot:hover) {
+      --color: var(--secondary-color) !important;
+    }
+
+    slot:hover,
+    colored-icon:hover + slot {
+      color: var(--secondary-color);
+    }
   `
 
   constructor () {

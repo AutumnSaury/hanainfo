@@ -55,6 +55,10 @@ customElements.define('settings-component', class extends HTMLElement {
       padding: 0;
     }
 
+    .settings__icon:hover {
+      --color: var(--secondary-color) !important;
+    }
+
     .settings__icon:hover + .settings__container,
     .settings__container:hover {
       display: flex;

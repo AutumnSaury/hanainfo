@@ -24,11 +24,11 @@ customElements.define('framework-view', class extends HTMLElement {
       height: 100vh;
   
       mask-image: url("src/assets/images/flower-rain.svg");
-      mask-size: contain;
+      mask-size: cover;
       mask-position: center;
   
       -webkit-mask-image: url("src/assets/images/flower-rain.svg");
-      -webkit-mask-size: contain;
+      -webkit-mask-size: cover;
       -webkit-mask-position: center;
     }
 

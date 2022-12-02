@@ -32,6 +32,7 @@ class ViewModel {
     this.$propBindedElements = this.#rootDOM.querySelectorAll('[bind-prop]')
     this.$eventBindedElements = this.#rootDOM.querySelectorAll('[bind-event]')
     this.$twoWayBindedElements = this.#rootDOM.querySelectorAll('[bind-two-way]')
+    this.$textBindedElements = this.#rootDOM.querySelectorAll('bind-text')
 
     // 代理数据
     const handlers = {
@@ -126,6 +127,14 @@ class ViewModel {
       })
     })
 
+    // 处理文本绑定
+    this.$textBindedElements.forEach(el => {
+      // 创建副作用函数
+      const expression = this.#createEffectByString(el.expression)
+      this.#registeringEffect = () => { el.text = expression() }
+      this.#registeringEffect()
+    })
+
     // 初始化
     this.init()
   }
@@ -204,5 +213,41 @@ class ViewModel {
     return proxy
   }
 }
+
+customElements.define('bind-text', class extends HTMLElement {
+  #shadowRoot
+  #template = /* html */ `
+    <slot></slot>
+    <span id="text"></span>
+  `
+  #style = /* css */ `
+    :host {
+      display: inline;
+    }
+
+    slot {
+      display: none;
+    }
+  `
+  constructor () {
+    super()
+    this.#shadowRoot = this.attachShadow({ mode: 'open' })
+    this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
+    this.textEl = this.#shadowRoot.querySelector('#text')
+    this.slotEl = this.#shadowRoot.querySelector('slot')
+  }
+
+  get expression () {
+    return this.slotEl.assignedNodes()[0].textContent
+  }
+
+  get text () {
+    return this.textEl.textContent
+  }
+
+  set text (value) {
+    this.textEl.textContent = value
+  }
+})
 
 export default ViewModel

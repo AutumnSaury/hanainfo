@@ -119,11 +119,11 @@ class AutumnPagination extends HTMLElement {
     const gotoInput = this.$shadowRoot.querySelector('.goto__input')
 
     prevBtn.addEventListener('click', () => {
-      this.setAttribute('current', this.current - 1)
+      this.current -= 1
     })
 
     nextBtn.addEventListener('click', () => {
-      this.setAttribute('current', this.current + 1)
+      this.current += 1
     })
 
     gotoInput.addEventListener('change', () => {
@@ -147,6 +147,16 @@ class AutumnPagination extends HTMLElement {
     return parseInt(this.getAttribute('current'))
   }
 
+  set current (value) {
+    if (value > this.total) {
+      value = this.total
+    }
+    if (value < 1) {
+      value = 1
+    }
+    this.setAttribute('current', value)
+  }
+
   get total () {
     return parseInt(this.getAttribute('total'))
   }
@@ -158,13 +168,17 @@ class AutumnPagination extends HTMLElement {
   attributeChangedCallback (name, oldValue, newValue) {
     switch (name) {
       case 'current':
-        this.dispatchEvent(new CustomEvent('page-change', {
-          detail: {
-            oldValue: parseInt(oldValue),
-            newValue: parseInt(newValue)
-          }
-        }))
-        this.refillList(this.total || 1, this.visibleSize || 1, this.current || 1)
+        if (!this.currentChanging) {
+          this.currentChanging = true
+          this.dispatchEvent(new CustomEvent('current-change', {
+            detail: {
+              oldValue: parseInt(oldValue),
+              newValue: parseInt(newValue)
+            }
+          }))
+          this.refillList(this.total || 1, this.visibleSize || 1, this.current || 1)
+          this.currentChanging = false
+        }
         break
       case 'total':
         this.dispatchEvent(new CustomEvent('total-change', {

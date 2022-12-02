@@ -100,7 +100,7 @@ customElements.define('sign-in-form', class extends HTMLElement {
       height: 2rem;
       width: 300px;
       border: none;
-      background-color: var(--secondary-color);
+      background-color: var(--primary-color);
       color: white;
       border-radius: 5px;
     }

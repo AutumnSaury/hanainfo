@@ -23,23 +23,6 @@ customElements.define('frontpage-view', class extends HTMLElement {
       height: 300vh
     }
 
-    :host:before {
-      content: "";
-      background-color: var(--primary-color);
-      position: fixed;
-      z-index: -1;
-      width: 100vw;
-      height: 100vh;
-  
-      mask-image: url("src/assets/images/flower-rain.svg");
-      mask-repeat: repeat-y;
-      mask-size: contain;
-  
-      -webkit-mask-image: url("src/assets/images/flower-rain.svg");
-      -webkit-mask-size: contain;
-      -webkit-mask-repeat: repeat-y;
-    }
-
     .frontpage__banner {
       height: 100vh;
       width: 100vw;

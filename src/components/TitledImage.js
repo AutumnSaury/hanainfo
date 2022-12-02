@@ -22,6 +22,7 @@ customElements.define('titled-image', class extends HTMLElement {
       background-color: white;
       background-size: cover;
       background-position: center;
+      cursor: pointer;
     }
 
     .overlay {

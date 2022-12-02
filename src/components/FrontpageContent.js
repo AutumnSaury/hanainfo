@@ -148,7 +148,6 @@ customElements.define('frontpage-content', class extends HTMLElement {
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    cursor: pointer;
   }
 
   .content__grid {

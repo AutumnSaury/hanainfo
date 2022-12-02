@@ -65,6 +65,7 @@ customElements.define('article-list-item', class extends HTMLElement {
       margin: 1em;
       font-weight: 500;
       color: gray;
+      flex-shrink: 0;
     }
 
     .preview {

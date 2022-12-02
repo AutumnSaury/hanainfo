@@ -12,7 +12,7 @@ customElements.define('articles-view', class extends HTMLElement {
     <div class="article-list">
       <article-list-item
         maintitle="万字长评《未闻花名》——庆祝十周年"
-        preview="高中的时候，从前只会在电教室和微机课堂出现的电脑成为了每个班里的必备物件，同学们经常会用它来播放各种视频，内容以恐怖片居多。但有一次他们放了一组动漫剪辑，其中就有未闻花名…"
+        preview="高中的时候，从前只会在电教室和微机课堂出现的电脑成为了每个班里的必备物件，同学们经常会用它来播放各种视频，内容以恐怖片居多…"
         cover="src/assets/images/anohana-arts/92307653.jpg"
         date="2021-08-29"
         author="莫帕孙夜迪"
@@ -20,7 +20,7 @@ customElements.define('articles-view', class extends HTMLElement {
       ></article-list-item>
       <article-list-item
         maintitle="最终，我没有被感动~"
-        preview="今年四月番双花人气高涨，尤其是那朵花。在其还未完结之时就出现在各大榜单上，在animeone上半年番投票中居然力压了治郁小圆脸荣登top1。只是，不知大家对于那朵花的最后一话怎么看…"
+        preview="今年四月番双花人气高涨，尤其是那朵花。在其还未完结之时就出现在各大榜单上，在animeone上半年番投票中居然力压了治郁小圆脸荣登top1…"
         cover="src/assets/images/anohana-arts/92614673.png"
         date="2011-06-30"
         author="Woodring"

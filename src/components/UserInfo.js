@@ -9,7 +9,18 @@ customElements.define('user-info', class extends HTMLElement {
     <img class="user-info__avatar" alt="头像" src="${userStore.avatar}">
     <div class="user-info__drop">
       <div class="drop__name">${userStore.name}</div>
-      <div class="drop__email">${userStore.email}</div>
+      <div class="drop__email">
+        ${userStore.email}
+        <colored-icon
+          class="drop__email-icon"
+          src="src/assets/icons/${userStore.gender}.svg"
+          color="${userStore.gender === 'male'
+            ? 'dodgerblue'
+            : 'pink'
+          }"
+          size="1em"
+        ></colored-icon>
+      </div>
       <div class="drop__sign-out">
         退出登录
         <colored-icon size="1.2rem" src="src/assets/icons/sign-out.svg" color="${window.globalStyle['--error-color']}"></colored-icon>
@@ -75,9 +86,14 @@ customElements.define('user-info', class extends HTMLElement {
     }
 
     .drop__email {
+      display: flex;
       margin-top: 0.5rem;
       font-size: 12px;
       color: gray;
+    }
+
+    .drop__email__icon {
+      display: inline-block;
     }
 
     .drop__sign-out {

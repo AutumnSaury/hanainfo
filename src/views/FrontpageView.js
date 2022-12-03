@@ -10,7 +10,7 @@ customElements.define('frontpage-view', class extends HTMLElement {
         HANA<span>INFO</span>
         <colored-icon class="banner__flower" src="src/assets/icons/forget-me-not.svg" color="var(--primary-color)"></colored-icon>
       </div>
-      <div class="banner__subtitle">Anohana情报站</div>
+      <div class="banner__subtitle">Anohana资讯站</div>
       <img class="banner__curve" alt="curve" src="src/assets/images/curve.svg">
       <colored-icon class="banner__down-arrow" src="src/assets/icons/arrows/arrow-down-bold.svg" color="white"></colored-icon>
     </div>

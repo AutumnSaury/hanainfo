@@ -162,7 +162,7 @@ customElements.define('register-form', class extends HTMLElement {
           }
           for (const item of [name, email, phone, password, gender]) {
             if (item === '') {
-              console.log(item)
+              // console.log(item)
               alert('请完整填写表单')
               break
             }

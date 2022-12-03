@@ -53,7 +53,7 @@ const routes = [
     path: 'main',
     componentName: 'framework-view',
     before (from, to) {
-      console.log(to)
+      // console.log(to)
       if (to.fullPath === '/main') {
         return { fullPath: '/main/frontpage' }
       }
@@ -97,7 +97,7 @@ window.$router = new Router(routes)
  * @return {boolean | Route}
  */
 window.$router.beforeEach = (from, to) => {
-  console.log(from, to)
+  // console.log(from, to)
   if (to.fullPath === '/') {
     return {
       fullPath: '/main'
@@ -106,7 +106,7 @@ window.$router.beforeEach = (from, to) => {
 
   if (!isAuthenticated() && !to.fullPath.startsWith('/sign')) {
     alert('请先登录')
-    console.log('redirected')
+    // console.log('redirected')
     return { fullPath: '/sign/sign-in' }
   }
 

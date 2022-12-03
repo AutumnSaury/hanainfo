@@ -24,7 +24,7 @@ function useUserStore (persistType = 'session') {
     set (target, key, value) {
       target[key] = value
       if (persistType === 'session') {
-        console.log('session')
+        // console.log('session')
         sessionStorage.setItem('user', JSON.stringify(target))
       } else if (persistType === 'local') {
         localStorage.setItem('user', JSON.stringify(target))

@@ -49,24 +49,24 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       filter: drop-shadow(0 0 1px black);
     }
 
+    h1 {
+      font-size: 60px;
+      margin: 0;
+    }
+
     h4 {
       margin-left: 4em;
     }
 
     section {
-      margin: 1em;
+      margin: 4rem;
       display: flex;
       flex-wrap: wrap;
       flex-direction: column;
       align-items: center;
-      max-height: 100vh;
-      width: 50%;
+      width: calc(2 * 20 * 14px + 10rem);
+      max-height: 600px;
       top: 0;
-    }
-
-    h1 {
-      font-size: 60px;
-      margin: 0;
     }
 
     p {
@@ -74,6 +74,20 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       width: 20em;
       font-size: 14px;
       filter: drop-shadow(0 0 1px black);
+    }
+
+    @media (min-width: 1600px) {
+      h1 {
+        font-size: 80px;
+      }
+      
+      section {
+        max-height: 800px;
+      }
+
+      p {
+        font-size: 16px;
+      }
     }
 
     img {

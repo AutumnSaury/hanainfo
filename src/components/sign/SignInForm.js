@@ -70,12 +70,12 @@ customElements.define('sign-in-form', class extends HTMLElement {
 
     .k-v-pair>input {
       height: 2rem;
-      width: 300px;
-      padding-left: 0.5rem;
+      width: calc(300px - 1em);
       outline: none;
       transition: 0.3s;
       border: 1px solid #888;
       border-radius: 5px;
+      padding: 0 0.5em;
     }
 
     .k-v-pair>input:focus {

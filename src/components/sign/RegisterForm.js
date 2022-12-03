@@ -84,8 +84,8 @@ customElements.define('register-form', class extends HTMLElement {
 
   .k-v-pair>input {
     height: 2rem;
-    width: 300px;
-    padding-left: 0.5rem;
+    width: calc(300px - 1rem);
+    padding: 0 0.5rem;
     outline: none;
     transition: 0.3s;
     border: 1px solid #888;

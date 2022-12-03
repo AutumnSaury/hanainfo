@@ -7,7 +7,7 @@ customElements.define('frontpage-view', class extends HTMLElement {
   #template = /* html */ `
     <div class="frontpage__banner">
       <div class="banner__title">
-      <span>HANA</span>INFO
+        HANA<span>INFO</span>
         <colored-icon class="banner__flower" src="src/assets/icons/forget-me-not.svg" color="var(--primary-color)"></colored-icon>
       </div>
       <div class="banner__subtitle">Anohana情报站</div>
@@ -75,11 +75,12 @@ customElements.define('frontpage-view', class extends HTMLElement {
       position: absolute;
       height: 2rem;
       bottom: -10%;
-      right: -10%;
+      left: -10%;
     }
 
     .banner__down-arrow {
       position: absolute;
+      cursor: pointer;
       bottom: 4rem;
     }
 
@@ -91,18 +92,12 @@ customElements.define('frontpage-view', class extends HTMLElement {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
-  }
-
-  static get observedAttributes () {
-    return []
-  }
-
-  attributeChangedCallback (name, oldValue, newValue) {
-    switch (name) {
-      case '':
-        break
-      default:
-        break
-    }
+    this.downArrow = this.#shadowRoot.querySelector('.banner__down-arrow')
+    this.downArrow.addEventListener('click', () => {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      })
+    })
   }
 })

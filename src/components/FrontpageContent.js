@@ -20,7 +20,7 @@ customElements.define('frontpage-content', class extends HTMLElement {
         image-position="left"
         maintitle="宿海仁太"
         subtitle="じんたん"
-        image-width="60%"
+        color="#f08080"
       >
         幼年时成绩优秀、体育优异，创立了超平和Busters，性格相当活泼，是众人的领袖，在面码死后变得不善与人交流。是个左撇子。
         秩父市立绿之丘第三中学校毕业，曾在中学时代得过校内马拉松第三名及市内硬笔展银赏。
@@ -30,27 +30,17 @@ customElements.define('frontpage-content', class extends HTMLElement {
     </div>
     <div class="grid__item--character-info grid__item ci2">
       <colored-card
-        src="src/assets/images/characters/menma.jpg"
-        image-position="right"
-        maintitle="本间芽衣子"
-        subtitle="めんま"
-        image-width="60%"
+        src="src/assets/images/characters/anaru_18667829.jpg"
+        image-position="left"
+        maintitle="安城鸣子"
+        subtitle="あなる"
       >
-        皮肤白皙、银发蓝瞳、身材娇小的少女。性格天真，是大家的吉祥物。有着独特的说话方式。总是想着别人，即使心里很难受也傻呵呵地笑，每次哭都是为了别人。
+        看上去很时髦的女高中生，有些傲娇。容易害羞。与仁太同班，从小的时候就喜欢仁太。
+        自己童年时因为尚不知道其昵称"安鸣"不雅，导致之后闹出很多笑话，使得长大后已明了其意思的自己不是很喜欢被这样叫，而且被朋友以外的人这样称呼时会惊慌失措并急忙否认。
+        最喜欢的是本间芽衣子，最讨厌的也是本间芽衣子。现在，在游戏商店打工。喜欢随波逐流但又非常想改掉这个毛病。从小收集很多漫画还有游戏碟，到现在也是这样。
       </colored-card>
     </div>
     <div class="grid__item--character-info grid__item ci3">
-      <colored-card
-        src="src/assets/images/characters/tsuruko_19385432.png"
-        image-position="left"
-        maintitle="鹤见知利子"
-        subtitle="つるこ"
-      >
-        具有作为成年人的性格，喜好读书。与松雪集入读同一间高中学校，学业成绩为年级第四。对人态度有些冷漠，说话也有些刻薄，但没有恶意，其实内心很善良而且冷静，也有可爱的一面。喜欢雪集，而且对雪集相当了解。集去买女性用品时常叫她同去当掩护，知道雪集假扮芽间。
-        有优秀的观察力，知道安城鸣子容易受人影响的缺点（从儿时起就一直在模仿芽衣子）和集暗中做的事。正因为在早些阶段就察觉到集的变异，为此而向仁太要求协助，最后在行动上成功拯救集的心理。
-      </colored-card>
-    </div>
-    <div class="grid__item--character-info grid__item ci4">
       <colored-card
         src="src/assets/images/characters/yukiatsu_19230237.jpg"
         image-position="right"
@@ -64,16 +54,28 @@ customElements.define('frontpage-content', class extends HTMLElement {
       而在这个契机之下，其扭曲的心理终于得以冷静，假扮成芽衣子的举动也终于停止，事后对知利子以言语表达感谢。
       </colored-card>
     </div>
+    <div class="grid__item--character-info grid__item ci4">
+      <colored-card
+        src="src/assets/images/characters/menma_52031923.jpg"
+        image-position="right"
+        maintitle="本间芽衣子"
+        subtitle="めんま"
+        image-width="50%"
+        color="#d3d3d3"
+      >
+        皮肤白皙、银发蓝瞳、身材娇小的少女。性格天真，是大家的吉祥物。有着独特的说话方式。总是想着别人，即使心里很难受也傻呵呵地笑，每次哭都是为了别人。
+      </colored-card>
+    </div>
     <div class="grid__item--character-info grid__item ci5">
       <colored-card
-        src="src/assets/images/characters/anaru_18667829.jpg"
+        src="src/assets/images/characters/tsuruko_19385432.png"
         image-position="left"
-        maintitle="安城鸣子"
-        subtitle="あなる"
+        maintitle="鹤见知利子"
+        subtitle="つるこ"
+        color="#808080"
       >
-        看上去很时髦的女高中生，有些傲娇。容易害羞。与仁太同班，从小的时候就喜欢仁太。
-        自己童年时因为尚不知道其昵称"安鸣"不雅，导致之后闹出很多笑话，使得长大后已明了其意思的自己不是很喜欢被这样叫，而且被朋友以外的人这样称呼时会惊慌失措并急忙否认。
-        最喜欢的是本间芽衣子，最讨厌的也是本间芽衣子。现在，在游戏商店打工。喜欢随波逐流但又非常想改掉这个毛病。从小收集很多漫画还有游戏碟，到现在也是这样。
+        具有作为成年人的性格，喜好读书。与松雪集入读同一间高中学校，学业成绩为年级第四。对人态度有些冷漠，说话也有些刻薄，但没有恶意，其实内心很善良而且冷静，也有可爱的一面。喜欢雪集，而且对雪集相当了解。集去买女性用品时常叫她同去当掩护，知道雪集假扮芽间。
+        有优秀的观察力，知道安城鸣子容易受人影响的缺点（从儿时起就一直在模仿芽衣子）和集暗中做的事。正因为在早些阶段就察觉到集的变异，为此而向仁太要求协助，最后在行动上成功拯救集的心理。
       </colored-card>
     </div>
     <div class="grid__item--character-info grid__item ci6">
@@ -82,6 +84,7 @@ customElements.define('frontpage-content', class extends HTMLElement {
         image-position="right"
         maintitle="久川铁道"
         subtitle="ぽっぽ"
+        color="#deb887"
       >
         昔日个头娇小，有如大家的弟弟。
         现在是最强壮的男人，虽然外表变化很大，但内心一点没变。
@@ -167,7 +170,7 @@ customElements.define('frontpage-content', class extends HTMLElement {
     height: calc(100% - 5px * 2);
     width: calc(100% - 5px * 2);
     margin: 5px;
-    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14) , 0px 3px 1px -2px rgba(0,0,0,0.12) , 0px 1px 5px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.14) , 0px 1px 10px 0px rgba(0,0,0,0.12) , 0px 2px 4px -1px rgba(0,0,0,0.2);
     border-radius: 10px;
     overflow: hidden;
   }
@@ -182,9 +185,9 @@ customElements.define('frontpage-content', class extends HTMLElement {
   }
 
   .ci1 { grid-area: 1 / 5 / 5 / 7; }
-  .ci2 { grid-area: 1 / 7 / 5 / 9; }
+  .ci2 { grid-area: 1 / 7 / 3 / 9; }
   .ci3 { grid-area: 5 / 5 / 7 / 7; }
-  .ci4 { grid-area: 5 / 7 / 7 / 9; }
+  .ci4 { grid-area: 3 / 7 / 7 / 9; }
   .ci5 { grid-area: 7 / 5 / 9 / 7; }
   .ci6 { grid-area: 7 / 7 / 9 / 9; }
 

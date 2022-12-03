@@ -8,6 +8,7 @@ customElements.define('articles-view', class extends HTMLElement {
       maintitle="文章"
       subtitle="Articles"
       src="src/assets/images/anohana-arts/92614673.png"
+      color="white"
     ></banner-with-title>
     <div class="article-list">
       <article-list-item

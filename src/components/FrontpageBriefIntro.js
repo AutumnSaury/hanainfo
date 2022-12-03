@@ -19,7 +19,7 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       </section>
     </article>
     <img src="src/assets/images/anohana.png" alt="anohana">
-    <colored-icon src="src/assets/icons/arrows/arrow-down-bold.svg" color="var(--primary-color)"></colored-icon>
+    <colored-icon src="src/assets/icons/arrows/arrow-down-bold.svg" color="var(--primary-color)" class="down-arrow"></colored-icon>
   `
   #style = /* css */ `
     :host {
@@ -39,36 +39,66 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
     article {
       color: white;
       display: flex;
+      justify-content: space-between;
+      width: 100%;
+      position: relative;
+    }
+
+    hgroup {
+      margin: 4rem;
+      filter: drop-shadow(0 0 1px black);
+    }
+
+    h4 {
+      margin-left: 4em;
+    }
+
+    section {
+      margin: 1em;
+      display: flex;
+      flex-wrap: wrap;
       flex-direction: column;
-      width: 70%;
-      margin: 5rem;
+      align-items: center;
+      max-height: 100vh;
+      width: 50%;
+      top: 0;
     }
 
     h1 {
-      font-size: 72px;
+      font-size: 60px;
       margin: 0;
     }
 
     p {
       text-indent: 2em;
-      font-size: 18px;
+      width: 20em;
+      font-size: 14px;
+      filter: drop-shadow(0 0 1px black);
     }
 
     img {
       position: absolute;
       bottom: 10%;
-      right: 5rem;
+      left: 5rem;
     }
 
     colored-icon {
       align-self: center;
       position: absolute;
       bottom: 4rem;
+      cursor: pointer;
     }
   `
   constructor () {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'open' })
     this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
+    this.downArrow = this.#shadowRoot.querySelector('.down-arrow')
+    this.downArrow.addEventListener('click', () => {
+      window.scrollTo({
+        top: window.innerHeight * 2,
+        behavior: 'smooth'
+      })
+    })
   }
 })

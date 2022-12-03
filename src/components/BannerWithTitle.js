@@ -23,13 +23,16 @@ customElements.define('banner-with-title', class extends HTMLElement {
       font-size: 48px;
       font-weight: 600;
       color: white;
-      filter: drop-shadow(0 0 5px black);
+      filter: drop-shadow(0 0 1px black);
+      color: var(--color, white);
     }
 
     .subtitle {
       font-size: 24px;
       font-weight: 400;
       color: white;
+      filter: drop-shadow(0 0 1px black);
+      color: var(--color, white);
     }
   `
   constructor () {
@@ -41,7 +44,7 @@ customElements.define('banner-with-title', class extends HTMLElement {
   }
 
   static get observedAttributes () {
-    return ['src', 'maintitle', 'subtitle']
+    return ['src', 'maintitle', 'subtitle', 'color']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
@@ -54,6 +57,9 @@ customElements.define('banner-with-title', class extends HTMLElement {
         break
       case 'src':
         this.style.setProperty('--bgi', `url(${newValue})`)
+        break
+      case 'color':
+        this.style.setProperty('--color', newValue)
         break
       default:
         break

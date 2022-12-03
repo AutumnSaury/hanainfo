@@ -57,16 +57,16 @@ customElements.define('colored-card', class extends HTMLElement {
     }
 
     .overlay-titles {
-      padding: 1rem;
+      padding: 0.5rem;
     }
 
     .overlay__title {
-      font-size: 36px;
+      font-size: 20px;
       font-weight: 600;
     }
 
     .overlay__subtitle {
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 400;
     }
 
@@ -95,6 +95,38 @@ customElements.define('colored-card', class extends HTMLElement {
       border-radius: 5px;
       background-color: var(--inverted-color, black);
       transition: 0.5s;
+    }
+
+    @media (max-width: 1200px) {
+      .overlay-titles {
+        padding: 0.5rem;
+      }
+  
+      .overlay__title {
+        font-size: 20px;
+        font-weight: 600;
+      }
+  
+      .overlay__subtitle {
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+
+    @media (min-width: 1600px) {
+      .overlay-titles {
+        padding: 1rem;
+      }
+  
+      .overlay__title {
+        font-size: 36px;
+        font-weight: 600;
+      }
+  
+      .overlay__subtitle {
+        font-size: 14px;
+        font-weight: 400;
+      }
     }
   `
 

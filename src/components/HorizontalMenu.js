@@ -69,7 +69,7 @@ customElements.define('horizontal-menu', class extends HTMLElement {
       background-position: center;
     }
 
-    .horizontal-menu>*{
+    .horizontal-menu > * {
       margin: 0 1rem;
     }
 
@@ -102,38 +102,34 @@ customElements.define('horizontal-menu', class extends HTMLElement {
     this.atTop = false
   }
 
-  static get observedAttributes () {
-    return []
-  }
-
-  attributeChangedCallback (name, oldValue, newValue) {
-    switch (name) {
-      case '':
-        break
-      default:
-        break
-    }
-  }
-
   connectedCallback () {
     const menu = this.#shadowRoot.querySelector('.horizontal-menu')
-    this.#positionChecker = setInterval(() => {
+
+    const setTransparent = () => {
+      menu.classList.add('horizontal-menu_at-top')
+      this.style.removeProperty('top')
+      this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
+        item.setAttribute('color', 'white')
+      })
+      this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'white')
+    }
+
+    const setOpaque = () => {
+      menu.classList.remove('horizontal-menu_at-top')
+      this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
+        item.setAttribute('color', 'gray')
+      })
+      this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'gray')
+    }
+
+    const positionChecker = () => {
       this.#thenPos = this.#nowPos
       this.#nowPos = window.scrollY
       // 滚动条位于页面顶部
       if (this.#nowPos === 0) {
-        menu.classList.add('horizontal-menu_at-top')
-        this.style.removeProperty('top')
-        this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
-          item.setAttribute('color', 'white')
-        })
-        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'white')
+        setTransparent()
       } else {
-        menu.classList.remove('horizontal-menu_at-top')
-        this.#shadowRoot.querySelectorAll('menu-item').forEach(item => {
-          item.setAttribute('color', 'gray')
-        })
-        this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'gray')
+        setOpaque()
       }
 
       // 向下滚动时隐藏菜单，向上滚动时展示菜单
@@ -142,7 +138,18 @@ customElements.define('horizontal-menu', class extends HTMLElement {
       } else if (this.#nowPos < this.#thenPos) {
         this.style.removeProperty('top')
       }
-    }, 500)
+    }
+
+    menu.addEventListener('mouseover', () => {
+      clearInterval(this.#positionChecker)
+      setOpaque()
+    })
+
+    menu.addEventListener('mouseout', () => {
+      this.#positionChecker = setInterval(positionChecker, 500)
+    })
+
+    this.#positionChecker = setInterval(positionChecker, 500)
   }
 
   disconnectedCallback () {

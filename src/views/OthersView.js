@@ -92,6 +92,10 @@ customElements.define('others-view', class extends HTMLElement {
       color: gray;
     }
 
+    h1 {
+      color: black;
+    }
+
     :is(h1, h2, h3)::before, 
     :is(h1, h2, h3)::after {
       content: "";

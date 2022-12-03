@@ -35,7 +35,7 @@ customElements.define('article-list-item', class extends HTMLElement {
       width: 100%;
       height: 200px;
       border-radius: 10px;
-      box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14) , 0px 3px 1px -2px rgba(0,0,0,0.12) , 0px 1px 5px 0px rgba(0,0,0,0.2);
+      box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.14) , 0px 1px 10px 0px rgba(0,0,0,0.12) , 0px 2px 4px -1px rgba(0,0,0,0.2);
       background-color: white;
       cursor: pointer;
     }

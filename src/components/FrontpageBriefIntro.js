@@ -64,15 +64,15 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       flex-wrap: wrap;
       flex-direction: column;
       align-items: center;
-      width: calc(2 * 20 * 14px + 10rem);
-      max-height: 600px;
+      width: calc(2 * 20 * 16px + 5rem);
+      max-height: 800px;
       top: 0;
     }
 
     p {
       text-indent: 2em;
       width: 20em;
-      font-size: 14px;
+      font-size: 16px;
       filter: drop-shadow(0 0 1px black);
     }
 
@@ -83,10 +83,11 @@ customElements.define('frontpage-brief-intro', class extends HTMLElement {
       
       section {
         max-height: 800px;
+        width: calc(2 * 20 * 18px + 10rem);
       }
 
       p {
-        font-size: 16px;
+        font-size: 18px;
       }
     }
 

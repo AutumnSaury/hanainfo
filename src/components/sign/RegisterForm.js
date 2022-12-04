@@ -164,7 +164,7 @@ customElements.define('register-form', class extends HTMLElement {
             if (item === '') {
               // console.log(item)
               alert('请完整填写表单')
-              break
+              return
             }
           }
 

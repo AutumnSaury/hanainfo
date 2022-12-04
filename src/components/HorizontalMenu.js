@@ -1,6 +1,7 @@
 import './MenuItem.js'
 import './SettingsComponent.js'
 import './UserInfo.js'
+import PauseableInterval from '../utils/PausableInterval.js'
 
 customElements.define('horizontal-menu', class extends HTMLElement {
   #shadowRoot
@@ -122,7 +123,7 @@ customElements.define('horizontal-menu', class extends HTMLElement {
       this.#shadowRoot.querySelector('settings-component').setAttribute('color', 'gray')
     }
 
-    const positionChecker = () => {
+    this.#positionChecker = new PauseableInterval(() => {
       this.#thenPos = this.#nowPos
       this.#nowPos = window.scrollY
       // 滚动条位于页面顶部
@@ -138,21 +139,19 @@ customElements.define('horizontal-menu', class extends HTMLElement {
       } else if (this.#nowPos < this.#thenPos) {
         this.style.removeProperty('top')
       }
-    }
+    })
 
     menu.addEventListener('mouseover', () => {
-      clearInterval(this.#positionChecker)
+      this.#positionChecker.pause()
       setOpaque()
     })
 
     menu.addEventListener('mouseout', () => {
-      this.#positionChecker = setInterval(positionChecker, 500)
+      this.#positionChecker.resume()
     })
-
-    this.#positionChecker = setInterval(positionChecker, 500)
   }
 
   disconnectedCallback () {
-    clearInterval(this.#positionChecker)
+    this.#positionChecker?.clear()
   }
 })

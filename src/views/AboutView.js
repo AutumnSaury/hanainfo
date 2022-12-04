@@ -37,6 +37,8 @@ customElements.define('about-view', class extends HTMLElement {
     <h2>最后</h2>
     <section>
       <p>感谢本网站使用的图标、插画和音乐的作者们，他们的工作使本网站的制作成为可能。</p>
+      <p>感谢范慧昊、王艺展、任宝卓、吴朝铄、申晓宇、张金辽、陈代庆同学和刘明勋学长的评价及反馈意见。</p>
+      <p>感谢Ashiterui在交互、排版设计方面提供的宝贵建议。</p>
       <p>最后，也感谢您的来访。</p>
     </section>
   </div>

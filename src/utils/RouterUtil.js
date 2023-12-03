@@ -16,8 +16,17 @@ class Router {
    * @param {Route[]} routes 路由记录
    */
   constructor (routes) {
+    /**
+     * @type {Route[]}
+     */
     this.routes = routes
+    /**
+     * @type {Route}
+     */
     this.currentRoute = {}
+    /**
+     * @type {Record<string, string>}
+     */
     this.init()
   }
 
@@ -30,12 +39,13 @@ class Router {
 
   handleHashChange () {
     window.removeEventListener('hashchange', this.handleHashChange)
-    this.push({ fullPath: location.hash.slice(1) })
+    this.push({ fullPath: /(?<=#)[^?]*/.exec(location.hash)?.[0] ?? '' })
     window.addEventListener('hashchange', this.handleHashChange)
   }
 
   initHash () {
-    const path = location.hash.slice(1)
+    const pathPattern = /(?<=#)[^?]*/
+    const path = pathPattern.exec(location.hash)?.[0] ?? ''
     if (path) {
       this.push({ fullPath: path })
     } else {

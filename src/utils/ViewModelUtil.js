@@ -15,9 +15,16 @@ class ViewModel {
   #registeringEffect
 
   /**
+   * @typedef VMConf
+   * @property {Record<string | number | symbol, any>} data
+   * @property {Record<string | number | symbol, Function>} methods
+   * @property {Record<keyof VMConf.data, (newVal: any) => void>} watch
+   */
+
+  /**
    * ViewModel构造函数
    * @param {HTMLElement} rootDOM
-   * @param {{}} confObj
+   * @param {VMConf} confObj
    *
    * @constructor
    */
@@ -51,11 +58,15 @@ class ViewModel {
           target[prop] = this.#createNestedProxy(value, handlers)
         }
         // HACK: 监听类似input这样的事件会造成无限循环，但不知道为什么循环到第二次的时候副作用桶会变成空值造成异常然后跳出，这里判断一下effect是否为空让它不至于报错
-        this.$effectMap.get(target)?.get(prop)?.forEach(effect => effect && effect())
+        this.$effectMap.get(target)?.get(prop)?.forEach(effect => effect?.())
         return true
       }
     }
-    this.data = this.#createNestedProxy(confObj.data, handlers)
+
+    /**
+     * @type {typeof confObj.data}
+     */
+    this.data = this.#createNestedProxy(confObj.data ?? {}, handlers)
 
     // 挂载方法
     this.methods = {}
@@ -135,6 +146,12 @@ class ViewModel {
       this.#registeringEffect()
     })
 
+    // 处理显式声明的Watch
+    for (const pair of Object.entries(confObj.watch ?? {})) {
+      this.#registeringEffect = () => { pair[1].bind(this)(this.data[pair[0]]) }
+      this.#registeringEffect()
+    }
+
     // 初始化
     this.init()
   }
@@ -158,10 +175,11 @@ class ViewModel {
     if (!bindStr) {
       return []
     }
-    const bindList = bindStr.match(/[a-zA-Z0-9-]+@\{.+\}/g)
+    const bindList = bindStr.match(/[a-zA-Z0-9-]+@\{.+?\}/g)
     if (!bindList) {
       return []
     }
+    console.log(bindList)
     return bindList.map(bind => {
       const pair = bind.split('@')
       const target = pair[0]
@@ -176,6 +194,7 @@ class ViewModel {
    * @returns {() => Function} 由表达式生成的副作用函数
    */
   #createEffectByString (expression) {
+    // eslint-disable-next-line no-new-func
     return new Function(`
       'use strict'
       return ${expression}

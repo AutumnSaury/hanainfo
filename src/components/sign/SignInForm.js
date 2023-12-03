@@ -12,7 +12,7 @@ customElements.define('sign-in-form', class extends HTMLElement {
   #template = /* html */ `
     <form>
     <img src="src/assets/images/hanainfo-dark.png" class="avatar">
-    <div class="k-v-pair">
+      <div class="k-v-pair">
         <label for="username">用户名/邮箱/手机号</label>
         <input name="username" id="username" type="text" bind-two-way="value@{this.data.form.username}" bind-event="change@{this.methods.switchAvatar}" placeholder="请输入用户名/邮箱/手机号">
       </div>
@@ -116,7 +116,7 @@ customElements.define('sign-in-form', class extends HTMLElement {
       this.style.setProperty('--avatar-radius', '0')
     })
 
-    const that = this
+    const host = this
     this.vm = new ViewModel(this.#shadowRoot, {
       data: {
         form: {
@@ -128,7 +128,7 @@ customElements.define('sign-in-form', class extends HTMLElement {
       methods: {
         submit () {
           // window.$router.push({ fullPath: '/main/frontpage' })
-          const { username, password } = that.vm.data.form
+          const { username, password } = this.data.form
           const { validateUser } = useUserListStore()
           const userStore = useUserStore(this.data.persist ? 'local' : 'session')
           const user = validateUser(username, password)
@@ -142,8 +142,8 @@ customElements.define('sign-in-form', class extends HTMLElement {
         switchAvatar (ev) {
           const { username } = this.data.form
           // eslint-disable-next-line no-undef
-          that.avatar.src = `https://cravatar.cn/avatar/${MD5(username)}?size=120&d=404`
-          that.style.setProperty('--avatar-radius', '50%')
+          host.avatar.src = `https://cravatar.cn/avatar/${MD5(username)}?size=120&d=404`
+          host.style.setProperty('--avatar-radius', '50%')
         }
       }
     })

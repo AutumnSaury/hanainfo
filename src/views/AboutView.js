@@ -11,7 +11,7 @@ customElements.define('about-view', class extends HTMLElement {
   <div class="container">
     <h2>关于本站</h2>
     <section>
-      <p>您现在浏览的网站是某蒟蒻制作的《前端开发技术》期末大作业，由于万恶的CORS限制，ESModule无法在file:///协议下加载，不得不将其部署到公网上。</p>
+      <p>您现在浏览的网站是某蒟蒻制作的期末大作业，由于万恶的CORS限制，ESModule无法在file:///协议下加载，不得不将其部署到公网上。</p>
       <p>由于素材版权等原因，本项目代码并未托管在公开仓库内。本网站会在答辩结束后第一时间下线。</p>
       <p>本网站使用Web Components以及某蒟蒻自己造的路由和数据绑定轮子构建。</p>
     </section>

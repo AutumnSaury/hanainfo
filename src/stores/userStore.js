@@ -14,7 +14,7 @@ Object.assign(user, JSON.parse(localStorage.getItem('user') || sessionStorage.ge
 /**
  * 用户信息Store Hook
  * @param {'session' | 'local'} persistType 数据持久化类型，默认存入sessionStorage
- * @return {proxy<User>}
+ * @return {User}
  */
 function useUserStore (persistType = 'session') {
   return new Proxy(user, {

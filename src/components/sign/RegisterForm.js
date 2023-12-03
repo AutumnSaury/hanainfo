@@ -4,17 +4,15 @@ import useUserListStore from '../../stores/userListStore.js'
 /**
  * @typedef {Object} User
  * @property {string} name 用户名
- * @property {'male' | 'female'} gender 性別
  * @property {string} password 密码
  * @property {string} email 邮箱
- * @property {string} phone 手机号
  * @property {string} avatar 头像
  */
 
 customElements.define('register-form', class extends HTMLElement {
   #shadowRoot
   #template = /* html */ `
-    <form>
+    <form bind-event="submit@{this.methods.submit}">
       <div class="k-v-pair">
         <label for="name">用户名</label>
         <input type="text" id="name" bind-two-way="value@{this.data.form.name}">
@@ -46,7 +44,7 @@ customElements.define('register-form', class extends HTMLElement {
           <label for="female">女</label>
         </div>
       </fieldset>
-      <button type="button" bind-event="click@{this.methods.submit}">注册</button>
+      <button type="submit">注册</button>
     </form>
   `
   #style = /* css */ `
@@ -153,7 +151,8 @@ customElements.define('register-form', class extends HTMLElement {
           this.data.form.gender = ev.target.value
         },
 
-        submit () {
+        submit (ev) {
+          ev.preventDefault()
           const { name, email, phone, password, gender } = this.data.form
           const { passwordRepeat } = this.data
           if (password !== passwordRepeat) {
@@ -162,7 +161,6 @@ customElements.define('register-form', class extends HTMLElement {
           }
           for (const item of [name, email, phone, password, gender]) {
             if (item === '') {
-              // console.log(item)
               alert('请完整填写表单')
               return
             }

@@ -1,8 +1,9 @@
 import '../components/BannerWithTitle.js'
 import '../components/ArticleListItem.js'
+import useArticleStore from '../stores/articleStore.js'
+import ViewModel from '../utils/ViewModelUtil.js'
 
 customElements.define('articles-view', class extends HTMLElement {
-  #shadowRoot
   #template = /* html */ `
     <banner-with-title
       maintitle="文章"
@@ -10,6 +11,9 @@ customElements.define('articles-view', class extends HTMLElement {
       src="src/assets/images/anohana-arts/92614673.png"
       color="white"
     ></banner-with-title>
+    <div class="new-article-btn-wrapper">
+      <button class="new-article-btn" bind-event="click@{this.methods.handleUpload}">投稿新文章</button>
+    </div>
     <div class="article-list">
       <article-list-item
         maintitle="万字长评《未闻花名》——庆祝十周年"
@@ -18,46 +22,6 @@ customElements.define('articles-view', class extends HTMLElement {
         date="2021-08-29"
         author="莫帕孙夜迪"
         href="https://www.bilibili.com/read/cv12919484/"
-      ></article-list-item>
-      <article-list-item
-        maintitle="最终，我没有被感动~"
-        preview="今年四月番双花人气高涨，尤其是那朵花。在其还未完结之时就出现在各大榜单上，在animeone上半年番投票中居然力压了治郁小圆脸荣登top1…"
-        cover="src/assets/images/anohana-arts/92614673.png"
-        date="2011-06-30"
-        author="Woodring"
-        href="https://movie.douban.com/review/5006852/"
-      ></article-list-item>
-      <article-list-item
-        maintitle="如何评价《未闻花名》?"
-        preview="在这部剧场版情报公开的时候，官方也正式宣布了这是以长井龙雪、冈田麿里、田中将贺为核心的动画制…"
-        cover="src/assets/images/anohana-arts/101946334.jpg"
-        date="2019-10-16"
-        author="星象馆"
-        href="https://www.zhihu.com/question/22722688/answer/859162533"
-      ></article-list-item>
-      <article-list-item
-        maintitle="致我正在进行的青春"
-        preview="熟悉的主题，类似的背景，但是加倍的感动，和不一样的情绪。青春不是谁的专属品，每个人都正在或曾经抑或即将拥有的…"
-        cover="src/assets/images/anohana-arts/46074035.png"
-        date="2014-06-18"
-        author="陈楚生日记泪水"
-        href="https://tieba.baidu.com/p/3113541172"
-      ></article-list-item>
-      <article-list-item
-        maintitle="浅谈《未闻花名》与《心欲呼喊》中的友谊与爱情"
-        preview="2011年，《未闻花名》播出，让人感动落泪。2015年，《心灵想要大声呼喊》上映，感动之潮再度来袭…"
-        cover="src/assets/images/anohana-arts/18231910.jpg"
-        date="2018-03-31"
-        author="qingqingzhuzi"
-        href="https://www.bilibili.com/read/cv336681"
-      ></article-list-item>
-      <article-list-item
-        maintitle="《未闻花名》原班人马新作释预告 讲述穿越四角恋"
-        preview="1905电影网讯 7月12日，日本动画电影《知晓天空之蓝的人啊》释出正式预告，本作是长井龙雪、冈田麿里…"
-        cover="src/assets/images/anohana-arts/41147271.jpg"
-        date="2019-07-12"
-        author="qiucen"
-        href="https://www.1905.com/news/20190712/1392406.shtml"
       ></article-list-item>
     </div>
   `
@@ -69,8 +33,24 @@ customElements.define('articles-view', class extends HTMLElement {
       align-items: center;
     }
 
+    .new-article-btn-wrapper {
+      width: 60vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      margin: 2rem 0;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 5px;
+    }
+
     .article-list {
-      margin-top: 2rem;
       width: 60vw;
       min-width: 768px;
     }
@@ -81,20 +61,35 @@ customElements.define('articles-view', class extends HTMLElement {
   `
   constructor () {
     super()
-    this.#shadowRoot = this.attachShadow({ mode: 'open' })
-    this.#shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
-  }
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = `${this.#template} <style>${this.#style}</style>`
+    this.vm = new ViewModel(this.shadowRoot, {
+      data: {},
+      methods: {
+        handleUpload () {
+          window.$router.push({ fullPath: '/main/article-edit' })
+        }
+      }
+    })
 
-  static get observedAttributes () {
-    return []
-  }
+    const listEl = this.shadowRoot.querySelector('.article-list')
+    const { articleList } = useArticleStore()
 
-  attributeChangedCallback (name, oldValue, newValue) {
-    switch (name) {
-      case '':
-        break
-      default:
-        break
-    }
+    articleList.forEach(article => {
+      console.log(article)
+      const helper = document.createElement('div')
+      helper.innerHTML = /* html */ `
+        <article-list-item
+          maintitle="${article.title}"
+          preview="${article.abstract}"
+          cover="${article.cover}"
+          date="${article.createdAt}"
+          author="${article.author}"
+          href="/?id=${article.id}#/main/article"
+          original
+        ></article-list-item>
+      `
+      listEl.appendChild(helper)
+    })
   }
 })

@@ -24,8 +24,8 @@ customElements.define('horizontal-menu', class extends HTMLElement {
         <menu-item
           icon="/src/assets/icons/more.svg" color="white"
           active-color="var(--primary-color)"
-          route='{"fullPath": "/main/others"}'
-        >其他</menu-item>
+          route='{"fullPath": "/main/article-edit"}'
+        >投稿</menu-item>
         <menu-item
           icon="/src/assets/icons/about.svg" color="white"
           active-color="var(--primary-color)"

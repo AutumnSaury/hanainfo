@@ -1,12 +1,14 @@
+import './components/sign/RegisterForm.js'
+import './components/sign/SignInForm.js'
 import Router from './utils/RouterUtil.js'
+import './views/AboutView.js'
+import './views/ArticleEditView.js'
+import './views/ArticleView.js'
+import './views/ArticlesView.js'
 import './views/FrameworkView.js'
 import './views/FrontpageView.js'
-import './views/ArticlesView.js'
 import './views/OthersView.js'
-import './views/AboutView.js'
 import './views/SignView.js'
-import './components/sign/SignInForm.js'
-import './components/sign/RegisterForm.js'
 
 import { useUserStore } from './stores/userStore.js'
 
@@ -78,6 +80,16 @@ const routes = [
         title: '关于',
         path: 'about',
         componentName: 'about-view'
+      },
+      {
+        title: '',
+        path: 'article',
+        componentName: 'article-view'
+      },
+      {
+        title: '',
+        path: 'article-edit',
+        componentName: 'article-edit-view'
       }
     ]
   }
